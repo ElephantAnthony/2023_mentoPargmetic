@@ -12,16 +12,25 @@
 
         <img src="{{ target_article.image.url }}" alt="">
 
-        <p>
+        <p style="">
             {{ target_article.content }}
         </p>
-
-        <a href="{% url 'articleapp:update' pk=target_article.pk %}">
+        {% if target_article.writer == user %}
+        <a href="{% url 'articleapp:update' pk=target_article.pk %}"
+           class="btn btn-primary rounded-pill col-3 mt-3">
             <p>Update Article</p>
         </a>
-        <a href="{% url 'articleapp:delete' pk=target_article.pk %}">
+        <a href="{% url 'articleapp:delete' pk=target_article.pk %}"
+            class="btn btn-danger rounded-pill col-3 mt-3">
             <p>Delete Article</p>
         </a>
+        {% endif %}
+
+        {% for comment in target_article.comment.all %}
+            {% include 'commentapp/detail.html' with comment=comment %}
+        {% endfor %}
+
+        {% include 'commentapp/create.html' with article=target_article %}
 
     </div>
 </div>
